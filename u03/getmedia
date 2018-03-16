@@ -1,0 +1,9 @@
+#!/bin/sh
+option=$1
+soubor=$2
+
+if [ "$option" = "--help" ]; then echo zadejte název souboru s html stránkou, pokud chcete vypsat jen obrázky, použijte přepínač -i, pokud chcete jen zvuky, použijte přepínač -s; fi
+if [ "$option" = "-i" ]; then grep -e .jpg -e .png -e .svg < $soubor ; fi
+if [ "$option" = "-s" ]; then grep -e .wav -e .mp3 -e .ogg < $soubor ; fi
+if [ "$option" = *".html" ]; then grep -e .jpg -e .png -e .svg -e .wav -e .mp3 -e .ogg < $option ; fi
+
