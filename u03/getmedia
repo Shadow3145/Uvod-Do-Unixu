@@ -2,8 +2,8 @@
 option=$1
 soubor=$2
 
-if [ "$option" = "--help" ]; then echo zadejte název souboru s html stránkou, pokud chcete vypsat jen obrázky, použijte přepínač -i, pokud chcete jen zvuky, použijte přepínač -s; fi
-if [ "$option" = "-i" ]; then grep -e .jpg -e .png -e .svg < $soubor ; fi
-if [ "$option" = "-s" ]; then grep -e .wav -e .mp3 -e .ogg < $soubor ; fi
-if [ "$option" = *".html" ]; then grep -e .jpg -e .png -e .svg -e .wav -e .mp3 -e .ogg < $option ; fi
+if [ "$option" = "--help" ]; then echo zadejte nazev souboru s html strankou, pokud chcete vypsat jen obrazky "(pripony .jpg, .png. svg)", pouzijte prepinac -i, pokud chcete jen zvuky "(pripony .wav, .mp3, .ogg)", pouzijte prepinac -s; fi
+if [ "$option" = "-i" ]; then cat $soubor | tr "\"" "\n" | grep -e .jpg -e .png ; fi
+if [ "$option" = "-s" ]; then cat $soubor | tr "\"" "\n" |  grep -e .wav -e .mp3 -e .ogg; fi; 
+if [ "$option" = *".html" ]; then cat $option | tr "\"" "\n" |  grep -e .jpg -e .png -e .svg -e .wav -e .mp3 -e .ogg; fi
 
