@@ -1,7 +1,9 @@
 #!/bin/sh
+soubor=$1
 for i in {1..12}
 do
-cut -d';' -f$i data.csv | head -n 1
+cut -d';' -f$i $soubor | head -n 1
 done > columns
 cat -n columns
+rm columns
 
