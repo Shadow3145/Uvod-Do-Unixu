@@ -1,0 +1,6 @@
+#!/bin/sh
+for i in {1..8}
+do
+cut -d';' -f$i data.csv | head -n 1  
+done > data2
+cat -n data2
