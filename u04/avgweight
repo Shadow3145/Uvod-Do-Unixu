@@ -1,0 +1,13 @@
+#!/bin/sh
+soubor=$1
+i=0
+vysledek=0
+./colnumbers $soubor | grep "Weight" | cut -d";" -f$(tr -s " " "\t" | cut -f2) $soubor | tail -n +2 > data2
+while IFS= read -r a 
+do 
+b=$(echo $a | tr "[" "." | cut -d"." -f1)
+vysledek=$((vysledek+b)) 
+[[ ! -z $a ]] && i=$((i+1))
+done < data2   
+echo $((vysledek/i))
+
