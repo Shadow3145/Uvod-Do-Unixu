@@ -1,0 +1,38 @@
+#!/bin/bash
+ARG1=$1
+ARG2=$2
+if [[ -d "${ARG1}" ]] ; then
+	cd $ARG1
+fi
+if [[ -d "${ARG2}" ]] ; then
+	cd $ARG2
+fi
+
+find -type f | while read f; do
+if [ "$ARG1" != "-r" ] && [ "$ARG2" != "-r" ]
+then
+	echo "$f" | egrep '\b[A-Z]+\b' > /dev/null 
+	if [ $? -eq 0 ]
+	then
+		FILE=`echo "$f" | tr [:upper:] [:lower:]`
+		if [ -f "$FILE" ];
+		then
+			echo "Soubor s timto jmenem uz existuje" >&2 
+		else 
+			mv "$f" `echo "$f" | tr [:upper:] [:lower:]`
+		fi
+	fi
+else
+	echo "$f" | egrep '\b[a-z]+\b' > /dev/null
+        if [ $? -eq 0 ]
+        then
+                FILE=`echo "$f" | tr [:lower:] [:upper:]`
+                if [ -f "$FILE" ];
+                then
+                        echo "Soubor s timto jmenem uz existuje" >&2
+                else
+                        mv "$f" `echo "$f" | tr [:lower:] [:upper:]`
+                fi
+        fi
+fi
+done
