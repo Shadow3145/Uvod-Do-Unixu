@@ -1,0 +1,16 @@
+#!/bin/bash
+file=$1
+dir=$2
+i=$((-1));
+while read line
+do
+	if [[ $line = *"diff --git"* ]]; then 
+		i=$((i+1))
+		line[$i]=$line
+	fi 
+done < "$file"
+
+
+csplit -z -f "$dir"/name.patch "$file" '/diff --git/' {$i} 
+
+
