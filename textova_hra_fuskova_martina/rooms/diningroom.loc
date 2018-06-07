@@ -1,0 +1,93 @@
+#!/bin/bash
+
+savegame_name=$1
+
+sed -i '1s/.*/diningroom.loc/' ../savegames/"$savegame_name"
+
+clear
+
+if [ `sed -n '6p' ../savegames/"$savegame_name"` = "off" ] ; then	
+	echo "You opened nicely carved wooden door and entered rather small dining room with several chairs a long table. At the end of the table you can see a plate and a cup. 
+	When you come closer you see, that the plate is full of food, there is water in the cup and you also notice, there is piece of paper placed in front of the table."
+	echo
+	echo "Press:
+		n - go back to the kitchen
+		e - eat the food
+		r - read the note"
+		
+	echo
+	echo "What would you like to do?"
+
+	while true; do 
+		read -p "< " ner
+		case $ner in 
+			n) if [ `sed -n '5p' ../savegames/"$savegame_name"` = "on" ] ; then
+				echo "You try to stand up, but suddenly you start feeling dizzy. It’s harder to breathe and your eyes are starting to close. 
+				You’re trying to fight it but soon your heart stops beating and your eyes are shut forever."
+				echo "You died. Game over."
+				sleep 3
+				echo "You'll have to start over."
+				rm ../savegames/"$savegame_name"
+				cp ../savegames/default.svg ../savegames/"$savegame_name" 
+				./start.loc "$savegame_name"
+			   else
+				./kitchen.loc "$savegame_name" 
+			   fi	
+			   ;;
+			e) echo "You can’t believe how lucky you are. You quickly sit behind the table and eat the delicious food."
+			   sed -i '5s/.*/on/' ../savegames/"$savegame_name"
+			   ;;
+			r) echo "You decide to be cautious and you first read the note.
+				„Welcome to my castle. Let’s play a game. If you manage to escape this castle in less than a day you win and I let you live. If not... Well you’ll we see. Good luck, you’re going to need it. 
+				PS: I wouldn’t eat the food if I were you.“"
+			   if [ `sed -n '5p' ../savegames/"$savegame_name"` = "on" ] ; then
+				echo "You stare at the note in absolute horror hoping the author of the letter was just joking about the food. Suddenly you start feeling dizzy. 
+				It’s harder to breathe and your eyes are starting to close. You’re trying to fight it but soon your heart stops beating and your eyes are shut forever."
+				echo "You died. Game over."
+				sleep 3
+				echo "You'll have to start over."
+				rm ../savegames/"$savegame_name"
+				cp ../savegames/default.svg ../savegames/"$savegame_name"
+				./start.loc "$savegame_name"
+			   else
+				echo "You sit on chair in horror trying to understand what’s going on. You take a few minutes before find the last bits of courage in yourself and stand up. 
+				You need to get out there. You don’t know who you are but you know you want to live."
+				echo
+				echo "Ok. You need a plan how to get out of there. First, search every single room and grab everything that might be useful. 
+				You start in this room. You search every single corner of this room but nothing, nothing at all. Except... the food on the table. You sit back behind the table and look at the food. What do you do?"
+				echo "Press:
+					n - to go back to the kitchen
+					e - to eat the food
+					l - to look around"
+				while true; do 
+					read -p "< " nel
+					case $nel in
+						n) ./kitchen.loc "$savegame_name" ;;
+						e) echo "Regardless the warning you eat the food. You’re hungry and he or she might be just joking. The food was truly delicious so you don’t regret it until you start feeling dizzy. 
+						It’s harder to breathe and your eyes are starting to close. You’re trying to fight it but soon your heart stops beating and your eyes are shut forever."
+						   echo "You died. Game over."
+						   sleep 3
+						   echo "You'll have to start over."
+						   rm ../savegames/"$savegame_name"
+						   cp ../savegames/default.svg ../savegames/"$savegame_name"
+						   ./start.loc "$savegame_name"
+						   ;;
+						l) echo "You look at the food more carefully. Using your cutlery you dig into the food and search for something hidden, but you don’t find anything. 
+						You look beneath the plate, into the cup and lastly you shake the pitcher. 
+						You can hear something is inside. You pour the water on the floor and take out a key. You don’t know where does the key belong but you hide it into your pocket."
+						   sed -i '6s/.*/on/' ../savegames/"$savegame_name"
+						   ;;
+						*) echo "The controls are nel." ;;
+					esac
+				done
+			   fi
+			   ;;
+			*) echo "The controls are n, e, r." ;;
+		 esac
+	done
+else
+	echo "You already was there and there is nothing more you could use. So you go back to the kitchen."
+	sleep 1
+	./kitchen.loc "$savegame_name"
+fi
+exit

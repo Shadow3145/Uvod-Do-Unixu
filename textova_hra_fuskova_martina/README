@@ -1,0 +1,61 @@
+NAME
+	escape.sh
+SYNOPSIS
+	./escape.sh [OPTION] [PLAYERNAME]
+DESCRIPTION
+	 Launch script for the whole game. Depending on used option it either creates new player and thus starting completely new game or loading already created player.
+OPTIONS
+	One of the following options must be used. 
+	-n playername		starts new game and creating a savegame file in savegames folder with name playername.svg
+	-l playername.svg	loads game using savegame file playername.svg
+COMMANDS USED
+	while cycle and case condition		parsing options
+	ret_val	and if conditions		to decide what to do - checking validity of options, existence of playrname, creating savegame file...
+	cp 					copy file - default.svg into new one
+
+
+NAME
+	savegames
+
+DESCRIPTION
+	In this folder are stored all savegame files. Every savegame file has suffix .svg 
+	There is default.svg file which is used to generate savegame file for new player.
+	Each savegame file has 20 lines. On the first line is current location of the player. On the other lines is either 'on' or 'off' depending on visited locations, killed enemies and things owned.
+
+NAME
+	rooms
+
+DESCRIPTION
+	In this folder are all locations player can visit. Each location is represented as script with suffix .loc 
+	When starting a game first script is launched in escape.sh Either it is script start.loc, when starting a new game, or location of the player from savegame file.
+
+LOCATIONS
+	start.loc
+	prisoncell.loc
+	hall.loc
+	crossroad1.loc
+	crossroad2.loc
+	crossroad3.loc
+	kitchen.loc
+	diningroom.loc
+	barracks.loc
+	cells.loc
+	office.loc
+	eastereggroom.loc
+	upstairs.loc
+	upstairshall.loc
+	courtyard.loc
+	upstairsbarracks.loc
+	twoknights.loc
+	lastcell.loc
+
+COMMANDS USED
+	sed					working with savegame files - changing ownership of weapons...
+	while cycle and case condition, read	checking player's input
+	if conditions				checking ownership of weapons, places visited...
+	echo					output
+
+
+	
+
+

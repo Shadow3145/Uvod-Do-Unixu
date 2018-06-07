@@ -1,0 +1,67 @@
+#!/bin/bash
+
+savegame_name=$1
+
+sed -i '1s/.*/kitchen.loc/' ../savegames/"$savegame_name"
+
+clear
+
+echo "You enter the kitchen hoping that you will meet someone but it’s completely empty. It looks abandoned as no one has cooked in this kitchen for a very long time. Thinking about food you start feeling hungry and thirsty."
+
+echo "Press:
+	w - go back to the hall
+	s - go to the next room
+	l - look around and try to find something useful"
+
+echo "What would you like to do?"
+
+while true; do
+	read -p "< " wsnel
+	case $wsnel in
+		w) echo "You decide to go back to the hall."
+		   ./crossroad2.loc "$savegame_name"
+		   ;;
+	  	n) echo "You like walls, don’t you?" ;;
+		e) echo "Hitting your head won’t get you your memory back." ;;
+		s) echo "You go the other room."
+		   ./diningroom.loc "$savegame_name"
+		   ;;
+		l) echo "You frantically search the room, trying to find something to eat, something useful or some clue about what happened there."
+		   echo "Press:
+		   		t - to search the tables
+				p - to look into pantry
+				r - to search the shelves
+				w - stop looking around and go back to the hall
+				s - stop looking around and go to the next room"
+		   echo "What would you like to do?"
+		   while true; do 
+		   	read -p "< " tprws
+			case $tprws in
+				t) echo "You look at the tables but all you can find is an old rotten bread." ;;
+				p) if [ `sed -n '4p' ../savegames/"$savegame_name"` = "off" ] ; then
+				   	echo "You enter pantry but you are not lucky. No food there as well. But you find a big butcher knife. You take the knife and put it behind your belt. You might need to defend yourself."
+			           	sed -i '4s/.*/on/' ../savegames/"$savegame_name"
+				   else
+				   	echo "There is nothing more in the pantry."
+				   fi
+				   ;;
+				r) echo "Unfortunately the shelves are empty." ;;
+				w) echo "You decide to go back to the hall."
+        		           ./crossroad2.loc "$savegame_name"
+	                	   ;;
+				s) echo "You go the other room."
+                   		   ./diningroom.loc "$savegame_name"
+                   		   ;;
+				*) echo "The controls are t, p, r, w, s." ;;
+			 esac
+		    done
+		    ;;
+		 *) echo "The controls are w, s, l." ;;
+	 esac
+done
+
+exit
+
+
+
+

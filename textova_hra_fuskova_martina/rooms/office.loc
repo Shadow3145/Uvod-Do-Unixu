@@ -1,0 +1,70 @@
+#!/bin/bash
+
+savegame_name=$1
+
+sed -i '1s/.*/office.loc/' ../savegames/"$savegame_name"
+
+clear
+
+echo "You enter a small but nicely decorated room, with large comfortable looking bed, big table, chair and small chest."
+
+echo "Press:
+	s - to go back to the hall
+	b - to search the bed
+	t - to search the table
+	c - to look at the chest"
+
+echo "What would you like to do?"
+
+while true; do
+	read -p "< " sbtce
+	case $sbtce in 
+		s) ./crossroad3.loc "$savegame_name" ;;
+		b) echo  "You search the bed but you don't find anything." ;;
+		t) echo "You look at the table and find a lot of papers. The text on most of them is faded. 	
+Except one paper on which you can see a short text that is still readable."
+		   echo "Press 'r' to read it."  	   
+		   read -p "<" rl
+		   case $rl in
+		   	r) echo "You look more carefully at the paper and you can see a short text that looks like a poem (author’s note: not a very good one)."
+			   echo "„Through youth you go blindly
+ then see the world’s cruel face.
+ And at the end of the life’s race,
+ you accept the death calmly.“" ;;
+ 			*) ;;
+		    esac
+		    ;;
+		 c) if [ `sed -n '12p' ../savegames/"$savegame_name"` = "off" ] ; then
+		 	echo "You look at the chest but you don’t see any key hole just three buttons with dragon’s head. The first one has wide open snout, the second one has closed both eyes and the last one lacks teeth. 
+Dragon with no teeth, looks quite funny." 
+			echo "Write sequence of numbers in which you press the dragon's heads. (For example 123)."
+			read sequence
+			if [ "$sequence" = "213" ] ; then 
+				echo "The chest opens and there is, wait for it, another key."
+				sed -i '12s/.*/on/' ../savegames/"$savegame_name"
+			else
+				echo "You hear some mechanism but it's not the mechanism you would like. The floor beneath you opens and you start falling down. You land with loud CRASH unable to move. 
+You can't see anything it's completely dark down here. Suddenly you see two lights staring at you. You gulp when large dragon appears in front of you. And it's the last thing you do."
+				echo "Game over."
+				sleep 3
+				echo "You will have to start over."
+				rm ../savegames/"$savegame_name"
+				cp ../savegames/default.svg ../savegames/"$savegame_name"
+				./start.loc "$savegame_name"
+			fi
+		    else
+		    	echo "The chest is already opened."
+		    fi
+		    ;;
+		 e) if [ `sed -n '13p' ../savegames/"$savegame_name"` = "off" ] ; then
+		 	echo "Really? That silly idea again? Hold on. It worked. You went through a wall and appeared in another room."
+ 	 	    	./eastereggroom.loc "$savegame_name" 
+		    else
+		    	echo "Guess it works only once... So your head hurts now."
+		    fi
+		    ;;
+		 *) echo "The controls are s, b, t, c." ;;
+	esac
+done
+
+

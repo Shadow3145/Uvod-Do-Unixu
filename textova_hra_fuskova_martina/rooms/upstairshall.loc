@@ -1,0 +1,28 @@
+#!/bin/bash
+
+savegame_name=$1
+
+sed -i '1s/.*/upstairshall.loc/' ../savegames/"$savegame_name"
+
+clear
+
+echo "You let the guard lie on the ground behind you and keep discovering this place trying to find your way out."
+
+echo "Press:
+	e - to go back downstairs
+	n - to go through big two winged door.
+	s - to go through heavy wooden door."
+
+while true; do
+	read -p "< " ens
+	case $ens in
+		e) echo "You go back downstairs."
+		   ./crossroad1.loc "$savegame_name" ;;
+		n) echo "You choose to go through two winged doors."
+		   ./courtyard.loc "$savegame_name" ;;
+		s) echo "ou choose to go through heavy wooden doors."
+		   ./upstairsbarracks.loc "$savegame_name" ;;
+	        *) echo "The controls are e, n, s." ;;
+	esac
+done
+

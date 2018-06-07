@@ -1,0 +1,42 @@
+#!/bin/bash
+
+savegame_name=$1
+
+sed -i '1s/.*/crossroad3.loc/' ../savegames/"$savegame_name"
+
+clear
+
+echo "You go right and see two doors. Which one of them do you try?"
+
+echo "Press:
+	w - to go back
+	n - to try the door on your left
+	e - to try the door in front of you"
+
+echo "What would you like to do?"
+
+while true; do
+	read -p "< " wne
+	case $wne in
+		w) ./crossroad1.loc "$savegame_name" ;;
+		n) if [ `sed -n '11p' ../savegames/"$savegame_name"` = "on" ] ; then
+			echo "You unlock the door without a problem."
+			./office.loc "$savegame_name"
+		   else
+		   	echo "The door is locked."
+		   fi
+		   ;;
+		e) if [ `sed -n '6p' ../savegames/"$savegame_name"` = "on" ] ; then
+			echo "One of the keys fits the keyhole and you unlock the door."
+			./barracks.loc "$savegame_name"
+		   else
+		   	echo "It's locked."
+	           fi
+		   ;;
+		*) echo "The controls are w, n, e."
+		   ;;
+	esac
+done
+exit
+
+

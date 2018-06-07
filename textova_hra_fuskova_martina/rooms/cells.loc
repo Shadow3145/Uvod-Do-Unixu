@@ -1,0 +1,37 @@
+#!/bin/bash
+
+savegame_name=$1
+
+sed -i '1s/.*/cells.loc/' ../savegames/"$savegame_name"
+
+clear
+
+sed -i '18s/.*/on/' ../savegames/"$savegame_name"
+
+echo "You enter the cells one by one. They look all the same. Windows with bars, heavy doors, straw and covers."
+
+echo "Press:
+	e - go back to the hall
+	l - look around"
+
+echo "What would you like to do?"
+
+while true; do
+	read -p "< " el
+	case $el in
+		e) ./hall.loc $savegame_name ;;
+		l) if [ `sed -n '10p' ../savegames/"$savegame_name"` = "off" ] ; then 
+			echo "You look more carefully. Trying to find something, some hidden mechanism like in your cell. You start feeling like it’s useless because you don’t find anything. 
+You even weren’t able to unlock one of the doors. Finally, the last room. You look through the straws, under the cover, check the window, the walls as always. 
+To your big surprise one of the bars is loose and you can take it out. There is a hole in the spot where the bars was embedded into the wall. And in the wall is a small key."
+		   sed -i '10s/.*/on/' ../savegames/"$savegame_name"
+		   else
+		   	echo "You look around trying to find something more but you're not succesful."
+		   fi
+		   ;;
+		*) echo "The controls are e, l." ;;
+	esac
+done
+
+exit
+

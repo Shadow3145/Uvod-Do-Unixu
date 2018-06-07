@@ -1,0 +1,15 @@
+#!/bin/bash
+savegame_name=$1
+
+clear
+
+echo
+echo "You wake up in a dark strange room, lying on cold hard stones. Your head aches like you had been kicked by a horse."
+echo "Slowly you manage to sit and then stand. Your eyes are adjusting to the darkness."
+echo "You’re trying to remember what are you doing here or who you actually are, but you don’t remember anything at all."
+
+sleep 10
+
+
+./prisoncell.loc "$savegame_name"
+

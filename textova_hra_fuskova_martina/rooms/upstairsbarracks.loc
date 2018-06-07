@@ -1,0 +1,28 @@
+#!/bin/bash
+
+savegame_name=$1
+
+sed -i '1s/.*/upstairsbarracks.loc/' ../savegames/"$savegame_name"
+
+clear
+
+echo "You carefully open the door and close them behind you. Hand on your weapon’s tilt just in case. It’s completely dark out there. But you can see light from next room and you hear voices."
+
+echo "Press
+	n - to go back to the hall
+	e - to go to the next room
+	l - to look around."
+
+echo "What would you like to do?"
+
+while true; do
+	 read -p "< " nel
+	 case $nel in
+	 	n) ./upstairshall.loc "$savegame_name" ;;
+		e) ./twoknights.loc "$savegame_name" ;;
+		l) echo "You look around but you don't see anything useful." ;;
+		*) echo "The controls are n, e, l." ;;
+	esac
+done
+
+

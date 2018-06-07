@@ -1,0 +1,57 @@
+#!/bin/bash
+
+savegame_name=$1
+
+sed -i '1s/.*/courtyard.loc/' ../savegames/"$savegame_name"
+
+clear
+if [ `sed -n '19p' ../savegames/"$savegame_name"` = "off" ] ; then
+	echo "You’re outside the castle on a large courtyard. You smile because you did it. It even wasn’t that hard. It feels good to be in the fresh air. Suddenly you hear a loud roar and right in front of you lands large dragon."
+
+	echo "Press:
+		s - quickly go back
+		f - try to fight it."
+
+	echo "What would you like to do?"
+
+	while true; do
+		read -p "< " sf
+		case $sf in
+			s) echo "You quickly go back to the castle and hide beyond the wall. The dragon doesn’t seem to follow you."
+			   sed -i '19s/.*/on/' ../savegames/"$savegame_name"
+			   ./upstairshall.loc "$savegame_name" ;;
+			f) if [ `sed -n '13p' ../savegames/"$savegame_name"` = "on" ] ; then
+				echo "Your weapons are ineffective against the dragon but then you remember the odd ancient scroll. You take it out and read it aloud. In the moment the dragon sees the scroll he starts stepping back. 
+				Once you read the last word he freezes and you are free to go."
+				echo "Congratulations. You escaped!"
+				sleep 2
+				exit
+			   else
+				echo "Even though you are armed you stand no chance against the fire breathing beast and you die." 
+				echo "Game over."
+			   fi
+			   ;;
+			*) echo "The controls are s, f." ;;
+		esac
+	done
+else
+	echo "You open the door a crack and look through it. You don't see the dragon anywhere so you carefully step outside. You make through steps when you hear something behind you. 
+	You turn around and see the dragon climbing down from castle walls blocking your way back."
+	if [ `sed -n '13p' ../savegames/"$savegame_name"` = "on" ] ; then
+		echo "You try to find courage to battle the beast but as you see it upclose you know you won't be able to defeat it. But then you remember the old scroll you found. You take it out and read it aloud. 
+		Once you read the last word the dragon freezed and you are free to go."
+		echo "Congratulations."
+		sleep 2
+		exit
+	else
+		echo "You take out your sword ready to fight the beast but you know it's desperate. The fight is over soon."
+		echo "You died."
+		echo "Game over."
+		sleep 2
+		echo "You'll have to start over."
+		rm ../savegames/"$savegame_name"
+		cp ../savegames/default.svg ../savegames/"$savegame_name"
+		./start.loc "$savegame_name"
+	fi
+fi
+

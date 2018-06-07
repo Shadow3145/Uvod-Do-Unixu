@@ -1,0 +1,14 @@
+#!/bin/bash
+
+savegame_name=$1
+
+sed -i '1s/.*/eastereggroom.loc/' ../savegames/"$savegame_name"
+
+clear
+
+echo "You appear in a small room. You look back at the wall and you see that from this side it looks like a some kind of a portal."
+echo "You look around the room and see a big mahogany table with beautiful carvings of dragons. On the table lies an old piece of paper but to your big surprise you can read it without any problem. Even though it doesn’t make much sense. But for some reason you take the scroll and take it with you."
+
+sed -i '13s/.*/on/' ../savegames/"$savegame_name"
+sleep 5
+./office.loc "$savegame_name"

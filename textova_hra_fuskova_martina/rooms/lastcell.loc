@@ -1,0 +1,10 @@
+#!/bin/bash
+
+savegame_name=$1
+
+sed -i '1s/.*/lastcell.loc/' ../savegames/"$savegame_name"
+
+clear
+
+echo "You enter the last cell thanks to the knight’s key and you see a small hole in the wall. But it’s wide enough for you to go through it. Once you are on the other side you are free to go. THE END."
+

@@ -1,0 +1,68 @@
+#!/bin/bash
+
+savegame_name=$1
+
+sed -i '1s/.*/hall.loc/' ../savegames/"$savegame_name"
+
+clear
+
+if [ `sed -n '18p' ../savegames/"$savegame_name"` = "off" ] ; then
+	echo "You find yourself on a long hall lit up by torches. You see several doors similar to the one you just opened. All are closed."
+	echo "Press:
+		s - go back to prisoncell 
+		w - go left
+		e - go right
+		l - look around and try to open one of the doors"
+
+	echo "What would you like to do?"
+
+	while true; do
+		read -p "< " nswel
+		case $nswel in
+			n) echo "Are you drunk? You nearly hit a wall." ;;
+			s) echo "You go back to the previous room."
+		   	   ./prisoncell.loc "$savegame_name"
+		           ;;
+			w) ./crossroad1.loc "$savegame_name" ;;
+			e) ./crossroad2.loc "$savegame_name" ;;
+			l) if [ `sed -n '9p' ../savegames/"$savegame_name"` = "on" ] ; then
+				echo "Thanks to the keys you have found in the barracks you manage to unlock all of the cells except one." 
+				./cells.loc "$savegame_name"
+		   	   else
+		   		echo "You look around and try to open some of the doors but they are all locked."
+		   	   fi
+		   	   ;;
+		 	*) echo "The controls are s, w, e, l."
+		esac
+	done
+else
+	echo "You find yourself on a long hall lit up by torches. All prison cells are opened except one cell at the of the hall."
+	echo "Press:
+		s - go back to prisoncell
+		w - go left
+		e - go right
+		l - try to open the last cell"
+	echo "What would you like to do?"
+
+	while true; do
+		read -p "< " swel
+		case $swel in
+		        s) echo "You go back to the previous room."
+                           ./prisoncell.loc "$savegame_name"
+                           ;;
+                        w) ./crossroad1.loc "$savegame_name" ;;
+                        e) ./crossroad2.loc "$savegame_name" ;;
+                        l) if [ `sed -n '14p' ../savegames/"$savegame_name"` = "on" ] ; then
+                                echo "Thanks to the key you have found upstairs you finally manage to get into the last cell."
+                                ./lastcell.loc "$savegame_name"
+                           else
+                                echo "You can't open the door."
+                           fi
+                           ;;
+                        *) echo "The controls are s, w, e, l."
+                esac
+        done
+fi
+	
+exit
+

@@ -1,0 +1,86 @@
+#!/bin/bash
+
+savegame_name=$1
+
+sed -i '2s/.*/barracks.loc/' ../savegames/"$savegame_name" 
+
+clear
+
+if [ `sed -n '16p' ../savegames/"$savegame_name"` = "off" ] ; then 
+	echo "The key you found in the pitcher matches the lock and you manage to open the door. You enter a big room with lots of beds. Next to each bed is a small bedside table. 
+	There are several rusty weapons leaning against the wall and and an old rusty axe in a showcase."
+else
+	echo "You enter the barracks again. Everything is same as you left it."
+fi
+echo "Press:
+	e - go to the hall
+	s - pick up one of the swords
+	a - take the axe
+	l - look around
+	w - go to the hall"
+
+echo "What would you like to do?"
+
+while true; do
+	read -p "< " esalw
+	case $esalw in
+		e) ./crossroad2.loc "$savegame_name" ;;
+		w) ./crossroad3.loc "$savegame_name" ;;
+		s) echo "You take a look at the swords and pick up the one that looks like the best."
+		   sed -i '7s/.*/on/' ../savegames/"$savegame_name"
+		   ;;
+		a) if [ `sed -n '8p' ../savegames/"$savegame_name"` = "off" ] ; then 
+		   	echo "You open the showcase and take out the axe. In that moment you can hear some CLICK sound. When you look more carefully, you notice there is something in the wall behind the showcase. 
+			It’s a long sword perfectly sharp with beautifully decorated hilt."
+		   	sed -i '8s/.*/on/' ../savegames/"$savegame_name"
+		   else
+		   	echo "The showcase is already opened and there is nothing more."
+		   fi
+		   ;;
+		l) echo "You look around the room thinking where might be something hidden. There are is a table with lot of papers, a chest beneath it. Something might be hidden also in bedside tables or under the beds."
+		   echo "Press:
+			c - to try to open the chest
+			t - to search the table
+			b - to search bedside tables
+			e - to go back to the hall
+			w - go to the hall"
+		   while true; do
+			read -p "< " ctbew
+			case $ctbew in
+				c) if [ `sed -n '10p' ../savegames/"$savegame_name"` = "on" ] ; then
+					if [ `sed -n '11p' ../savegames/"$savegame_name"` = "off" ] ; then
+						echo "You try the key you found in one of the prison cells and you unlock the chest in which you find another key."
+						sed -i '11s/.*/on/' ../savegames/"$savegame_name"
+					else
+						echo "There is nothing more in the chest."
+					fi
+				   else
+					echo "You try to open the chest, but it’s locked."
+				   fi
+				   ;;
+				t) echo "You go through the papers but the writing is faded." ;;
+				b) if [ `sed -n '9p' ../savegames/"$savegame_name"` = "off" ] ; then
+					echo "You look into every bedside table and in one of them you find a key ring with dozens of keys. You also look under the beds but there are just several spiders and some old socks."
+				   	sed -i '9s/.*/on/' ../savegames/"$savegame_name"
+				   else
+				   	echo "Nothing useful in the bedside tables."
+				   fi
+				   ;;
+				e) sed -i '16s/.*/on/' ../savegames/"$savegame_name"
+				   ./crossroad2.loc "$savegame_name" 
+				   ;;
+				w) sed -i '16s/.*/on/' ../savegames/"$savegame_name"
+				   ./crossroad3.loc "$savegame_name" 
+				   ;;
+				*) echo "The controls are c, t, b, e." ;;
+			esac
+		    done
+		    ;;
+		 *) echo "The controls are e, s, a, l." ;;
+	esac
+done
+ 
+exit
+				
+
+
