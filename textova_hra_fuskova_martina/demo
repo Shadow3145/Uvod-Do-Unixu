@@ -1,0 +1,5 @@
+#!/bin/bash
+
+./escape.sh --help
+
+echo "For more information read README file. Controls to control the character are written in each location."
